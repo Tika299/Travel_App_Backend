@@ -1,13 +1,7 @@
 FROM php:8.3-fpm
 
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
+    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev zip unzip git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql zip \
     && rm -rf /var/lib/apt/lists/*
@@ -16,7 +10,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /var/www/html
 
-# Tạo thư mục Laravel cần thiết
+# THÊM DÒNG NÀY → COPY CODE VÀO IMAGE
+COPY . .
+
 RUN mkdir -p storage bootstrap/cache && \
     chown -R www-data:www-data storage bootstrap/cache
 
