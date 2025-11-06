@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: php-app
+    env: docker
+    dockerfilePath: ./Dockerfile
+    repo: https://github.com/yourusername/your-repo.git  # Thay bằng repo của bạn
+    region: oregon  # Hoặc singapore (gần VN hơn)
+    plan: free  # free tier
+    healthCheckPath: /  # Kiểm tra route gốc
+    envVars:
+      - key: APP_ENV
+        value: production
+      # Thêm env khác nếu cần (ví dụ: DB vars)
