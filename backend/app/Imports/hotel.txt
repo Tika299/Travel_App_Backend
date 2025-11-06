@@ -1,0 +1,141 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\Hotel;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Request;
+
+class HotelImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure, WithBatchInserts
+{
+    protected $imageUrls = [];
+    protected $guzzleClient;
+
+    public function __construct()
+    {
+        $this->guzzleClient = new Client(['timeout' => 10]);
+    }
+
+    public function model(array $row)
+    {
+        // Kiểm tra nhanh tên khách sạn
+        $name = trim($row['name'] ?? '');
+        if (empty($name)) {
+            return null; // Bỏ qua dòng trống
+        }
+
+        // Xử lý latitude và longitude
+        $latitude = isset($row['latitude']) ? (float) str_replace(',', '.', $row['latitude']) : null;
+        $longitude = isset($row['longitude']) ? (float) str_replace(',', '.', $row['longitude']) : null;
+
+        // Lưu URL hình ảnh vào mảng để xử lý sau
+        if (!empty($row['images'])) {
+            $this->imageUrls[] = [
+                'hotel_name' => $name,
+                'images' => $row['images'],
+            ];
+        }
+
+        return new Hotel([
+            'name' => $name,
+            'description' => $row['description'] ?? null,
+            'address' => $row['address'] ?? null,
+            'images' => null, // Tạm thời để null, sẽ xử lý sau
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'email' => $row['email'] ?? null,
+            'phone' => $row['phone'] ?? null,
+            'website' => $row['website'] ?? null,
+        ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'address' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|string',
+            'website' => 'nullable|url',
+        ];
+    }
+
+    public function onFailure(\Maatwebsite\Excel\Validators\Failure ...$failures)
+    {
+        // Ghi log lỗi ngắn gọn
+        foreach ($failures as $failure) {
+            Log::error("Lỗi import dòng {$failure->row()}: " . implode(', ', $failure->errors()));
+        }
+    }
+
+    public function batchSize(): int
+    {
+        return 200; // Tăng batch size để thử nghiệm
+    }
+
+    public function onFinish()
+    {
+        // Xử lý hình ảnh sau khi import xong
+        $this->processImages();
+    }
+
+    protected function processImages()
+    {
+        set_time_limit(600); // Tăng thời gian xử lý cho hình ảnh
+
+        $requests = function () {
+            foreach ($this->imageUrls as $item) {
+                $imageUrls = is_array($item['images']) ? $item['images'] : explode(',', $item['images']);
+                foreach ($imageUrls as $url) {
+                    $url = trim($url);
+                    if (!$url) continue;
+
+                    // Xử lý URL Google Drive
+                    if (preg_match('/drive\.google\.com\/file\/d\/(.+?)\/view/', $url, $matches)) {
+                        $fileId = $matches[1];
+                        $url = "https://drive.google.com/uc?export=download&id={$fileId}";
+                    }
+
+                    yield new Request('GET', $url);
+                }
+            }
+        };
+
+        $pool = new Pool($this->guzzleClient, $requests(), [
+            'concurrency' => 5, // Số lượng request đồng thời
+            'fulfilled' => function ($response, $index) {
+                $item = $this->imageUrls[floor($index / count($this->imageUrls))];
+                $imageName = time() . '_' . uniqid() . '.jpg';
+                $destinationPath = 'storage/uploads/hotels/' . $imageName;
+
+                // Lưu hình ảnh vào storage
+                Storage::disk('public')->put($destinationPath, $response->getBody());
+
+                // Cập nhật bản ghi Hotel
+                Hotel::where('name', $item['hotel_name'])->update([
+                    'images' => DB::raw("COALESCE(images, '[]') || '[\"$destinationPath\"]'::jsonb")
+                ]);
+            },
+            'rejected' => function ($reason, $index) {
+                Log::error("Lỗi tải hình ảnh: $reason");
+            },
+        ]);
+
+        $promise = $pool->promise();
+        $promise->wait();
+    }
+}
