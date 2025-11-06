@@ -16,16 +16,14 @@ RUN apt-get update && apt-get install -y \
 # Cài Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Thư mục làm việc
 WORKDIR /var/www/html
 
-# Không COPY code (Render mount tự động)
+# KHÔNG COPY . . → Render sẽ mount repo tự động
 
 # Quyền (nếu cần)
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache && \
+    chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port cho Render
 EXPOSE 10000
 
-# Chạy composer + PHP server khi start
 CMD ["sh", "-c", "composer install --no-dev --optimize-autoloader --no-interaction && php -S 0.0.0.0:10000 -t public"]
