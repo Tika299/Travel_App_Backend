@@ -17,14 +17,14 @@ class CuisineSeeder extends Seeder
 
         // 2. Tạo 8 danh mục cố định
         $categoriesData = [
-            ['name' => 'Phở', 'icon' => 'http://localhost:8000/storage/category_icons/pho.png', 'type' => 'food'],
-            ['name' => 'Bún', 'icon' => 'http://localhost:8000/storage/category_icons/bun.png', 'type' => 'food'],
-            ['name' => 'Cơm', 'icon' => 'http://localhost:8000/storage/category_icons/com.png', 'type' => 'food'],
-            ['name' => 'Bánh mì', 'icon' => 'http://localhost:8000/storage/category_icons/banhmi.png', 'type' => 'food'],
-            ['name' => 'Lẩu', 'icon' => 'http://localhost:8000/storage/category_icons/lau.png', 'type' => 'food'],
-            ['name' => 'Gỏi', 'icon' => 'http://localhost:8000/storage/category_icons/goi.png', 'type' => 'food'],
-            ['name' => 'Hải sản', 'icon' => 'http://localhost:8000/storage/category_icons/haisan.png', 'type' => 'food'],
-            ['name' => 'Món chay', 'icon' => 'http://localhost:8000/storage/category_icons/chay.png', 'type' => 'food'],
+            ['name' => 'Phở', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/pho.png', 'type' => 'food'],
+            ['name' => 'Bún', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/bun.png', 'type' => 'food'],
+            ['name' => 'Cơm', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/com.png', 'type' => 'food'],
+            ['name' => 'Bánh mì', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/banhmi.png', 'type' => 'food'],
+            ['name' => 'Lẩu', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/lau.png', 'type' => 'food'],
+            ['name' => 'Gỏi', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/goi.png', 'type' => 'food'],
+            ['name' => 'Hải sản', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/haisan.png', 'type' => 'food'],
+            ['name' => 'Món chay', 'icon' => 'https://travel-app-api-ws77.onrender.com/storage/category_icons/chay.png', 'type' => 'food'],
         ];
 
         foreach ($categoriesData as $data) {

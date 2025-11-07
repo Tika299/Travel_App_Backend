@@ -16,19 +16,19 @@
     <h1>Test Image Display</h1>
     
     <h2>Ảnh mới import:</h2>
-    <img src="http://localhost:8000/storage/uploads/cuisine/1754849485_6898e0cd04618.jpg" 
+    <img src="https://travel-app-api-ws77.onrender.com/storage/uploads/cuisine/1754849485_6898e0cd04618.jpg" 
          alt="Bún chả" class="test-image" />
     <p>Đường dẫn: storage/uploads/cuisine/1754849485_6898e0cd04618.jpg</p>
     
     <h2>Ảnh mặc định:</h2>
-    <img src="http://localhost:8000/storage/uploads/cuisine/default-food.gif" 
+    <img src="https://travel-app-api-ws77.onrender.com/storage/uploads/cuisine/default-food.gif" 
          alt="Default food" class="test-image" />
     <p>Đường dẫn: storage/uploads/cuisine/default-food.gif</p>
     
     <h2>Ảnh cũ (có thể không hoạt động):</h2>
-    <img src="http://localhost:8000/storage/cuisine/906qXwWkVjHlYDKltjOTT3A7L9ajf5JWDnEeczmE.jpg" 
+    <img src="https://travel-app-api-ws77.onrender.com/storage/cuisine/906qXwWkVjHlYDKltjOTT3A7L9ajf5JWDnEeczmE.jpg" 
          alt="Bún Chả Hà Nội" class="test-image" />
-    <p>Đường dẫn: http://localhost:8000/storage/cuisine/906qXwWkVjHlYDKltjOTT3A7L9ajf5JWDnEeczmE.jpg</p>
+    <p>Đường dẫn: https://travel-app-api-ws77.onrender.com/storage/cuisine/906qXwWkVjHlYDKltjOTT3A7L9ajf5JWDnEeczmE.jpg</p>
     
     <script>
         // Kiểm tra lỗi load ảnh

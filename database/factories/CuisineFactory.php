@@ -20,12 +20,12 @@ class CuisineFactory extends Factory
         ];
 
         $images = [
-            'http://localhost:8000/storage/cuisine/2xWy68prmfDU0D2qzYjdGpzFMfcYuUvMnb4KH6Q2.jpg',
-            'http://localhost:8000/storage/cuisine/27i9iEdckb5gCZWYgwuzM0Y4xQAOfiaYxB2WxZ06.jpg',
-            'http://localhost:8000/storage/cuisine/906qXwWkVjHlYDKltjOTT3A7L9ajf5JWDnEeczmE.jpg',
-            'http://localhost:8000/storage/cuisine/C6zjbBfjCLa7f8FnpwXcoTbetN0QCXQqUxtfIrxK.jpg',
-            'http://localhost:8000/storage/cuisine/jV9KF3ZLqI6pZH7IDxSBPnmbdPFPvzDh0MccLw1t.jpg',
-            'http://localhost:8000/storage/cuisine/kGlfYQNyk6x3lWRK3zXodCg2jOeRA0XpyZLLIXsm.jpg',
+            'https://travel-app-api-ws77.onrender.com/storage/cuisine/2xWy68prmfDU0D2qzYjdGpzFMfcYuUvMnb4KH6Q2.jpg',
+            'https://travel-app-api-ws77.onrender.com/storage/cuisine/27i9iEdckb5gCZWYgwuzM0Y4xQAOfiaYxB2WxZ06.jpg',
+            'https://travel-app-api-ws77.onrender.com/storage/cuisine/906qXwWkVjHlYDKltjOTT3A7L9ajf5JWDnEeczmE.jpg',
+            'https://travel-app-api-ws77.onrender.com/storage/cuisine/C6zjbBfjCLa7f8FnpwXcoTbetN0QCXQqUxtfIrxK.jpg',
+            'https://travel-app-api-ws77.onrender.com/storage/cuisine/jV9KF3ZLqI6pZH7IDxSBPnmbdPFPvzDh0MccLw1t.jpg',
+            'https://travel-app-api-ws77.onrender.com/storage/cuisine/kGlfYQNyk6x3lWRK3zXodCg2jOeRA0XpyZLLIXsm.jpg',
         ];
 
         return [

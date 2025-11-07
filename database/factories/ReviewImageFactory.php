@@ -28,7 +28,7 @@ class ReviewImageFactory extends Factory
 
         return [
             'review_id' => Review::inRandomOrder()->value('id'),
-            'image_path' => 'http://localhost:8000/storage/review_images/' . $this->faker->randomElement($images),
+            'image_path' => 'https://travel-app-api-ws77.onrender.com/storage/review_images/' . $this->faker->randomElement($images),
             'is_main' => false,
         ];
     }

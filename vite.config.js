@@ -11,14 +11,14 @@ export default defineConfig({
       '/api': {
         // Chuyển tiếp yêu cầu đó đến server backend
         // Đảm bảo URL này khớp với URL của server Laravel của bạn
-        target: 'http://localhost:8000',
+        target: 'https://travel-app-api-ws77.onrender.com',
         
         // Cần thiết để đảm bảo các header của yêu cầu được gửi đi đúng cách
         changeOrigin: true,
         
         // Viết lại đường dẫn yêu cầu
         // Ví dụ: '/api/transport-companies/import' sẽ trở thành
-        // 'http://localhost:8000/api/transport-companies/import'
+        // 'https://travel-app-api-ws77.onrender.com/api/transport-companies/import'
         rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
     },
