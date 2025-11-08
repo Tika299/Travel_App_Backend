@@ -45,11 +45,11 @@ class ItineraryEvent extends Model
     }
 
     /**
-     * Relationship với CheckinPlace (địa điểm tham quan)
+     * Relationship với CheckInPlace (địa điểm tham quan)
      */
-    public function checkinPlace()
+    public function CheckInPlace()
     {
-        return $this->belongsTo(CheckinPlace::class);
+        return $this->belongsTo(CheckInPlace::class);
     }
 
     /**

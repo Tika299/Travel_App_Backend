@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\CheckinPlacesImport;
+use App\Imports\CheckInPlacesImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-class CheckinPlaceImportController extends Controller
+class CheckInPlaceImportController extends Controller
 {
     /**
      * Import file Excel vào database.
@@ -20,7 +20,7 @@ class CheckinPlaceImportController extends Controller
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
-        Excel::import(new CheckinPlacesImport, $request->file('file'));
+        Excel::import(new CheckInPlacesImport, $request->file('file'));
 
         return response()->json(['message' => 'Import địa điểm check-in thành công!']);
     }

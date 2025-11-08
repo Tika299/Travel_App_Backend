@@ -36,7 +36,7 @@ class Schedule extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function checkinPlace()
+    public function CheckInPlace()
     {
         return $this->belongsTo(CheckInPlace::class, 'checkin_place_id');
     }

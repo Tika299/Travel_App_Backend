@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CheckinPlace;
+use App\Models\CheckInPlace;
 use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\User;
@@ -165,7 +165,7 @@ class AITravelController extends Controller
         $region = $regionMap[$destination] ?? null;
         
         // Tìm kiếm địa điểm dựa trên destination và region
-        $checkinPlaces = CheckinPlace::where(function($query) use ($destination, $region) {
+        $CheckInPlaces = CheckInPlace::where(function($query) use ($destination, $region) {
             $query->where('name', 'like', '%' . $destination . '%')
                   ->orWhere('address', 'like', '%' . $destination . '%');
             
@@ -393,7 +393,7 @@ class AITravelController extends Controller
         ->get();
 
         return [
-            'checkin_places' => $checkinPlaces,
+            'checkin_places' => $CheckInPlaces,
             'hotels' => $hotels,
             'restaurants' => $restaurants
         ];
@@ -748,7 +748,7 @@ Yêu cầu quan trọng:
             }
         })->take(50)->get();
         
-        $attractions = \App\Models\CheckinPlace::where(function($query) use ($destinationKeywords) {
+        $attractions = \App\Models\CheckInPlace::where(function($query) use ($destinationKeywords) {
             foreach ($destinationKeywords as $keyword) {
                 $query->orWhere('address', 'LIKE', '%' . $keyword . '%');
             }
@@ -762,7 +762,7 @@ Yêu cầu quan trọng:
             $restaurants = \App\Models\Restaurant::take(50)->get();
         }
         if ($attractions->count() === 0) {
-            $attractions = \App\Models\CheckinPlace::take(50)->get();
+            $attractions = \App\Models\CheckInPlace::take(50)->get();
         }
         
         // Parse destination từ prompt
@@ -1255,14 +1255,14 @@ Yêu cầu quan trọng:
                         $type = $this->determineEventType($activity['type'] ?? 'activity');
                         
                         // Tìm foreign key dựa trên tên và loại
-                        $checkinPlaceId = null;
+                        $CheckInPlaceId = null;
                         $hotelId = null;
                         $restaurantId = null;
                         
                         if ($type === 'activity' || $type === 'attraction') {
                             // Tìm trong checkin_places với logic tìm kiếm cải thiện
                             $searchName = $activity['name'];
-                            $checkinPlace = \App\Models\CheckinPlace::where(function($query) use ($searchName) {
+                            $CheckInPlace = \App\Models\CheckInPlace::where(function($query) use ($searchName) {
                                 $query->where('name', 'like', '%' . $searchName . '%')
                                       ->orWhere('name', 'like', '%' . str_replace(['Nhà Thờ ', 'Bảo tàng ', 'Chợ ', 'Phố đi bộ '], '', $searchName) . '%')
                                       ->orWhere('name', 'like', '%' . str_replace(['Đức Bà Sài Gòn', 'Đức Bà'], 'Đức Bà', $searchName) . '%')
@@ -1271,8 +1271,8 @@ Yêu cầu quan trọng:
                                       ->orWhere('name', 'like', '%' . str_replace(['Dinh Độc Lập'], 'Độc Lập', $searchName) . '%')
                                       ->orWhere('name', 'like', '%' . str_replace(['Landmark 81'], 'Landmark', $searchName) . '%');
                             })->first();
-                            if ($checkinPlace) {
-                                $checkinPlaceId = $checkinPlace->id;
+                            if ($CheckInPlace) {
+                                $CheckInPlaceId = $CheckInPlace->id;
                             }
                         } elseif ($type === 'hotel') {
                             // Tìm trong hotels với logic tìm kiếm cải thiện
@@ -1301,7 +1301,7 @@ Yêu cầu quan trọng:
                         // Tạo event con
                         \App\Models\ItineraryEvent::create([
                             'schedule_id' => $schedule->id,
-                            'checkin_place_id' => $checkinPlaceId,
+                            'checkin_place_id' => $CheckInPlaceId,
                             'hotel_id' => $hotelId,
                             'restaurant_id' => $restaurantId,
                             'title' => $activity['name'] ?? 'Hoạt động ' . ($activityIndex + 1),
@@ -1316,7 +1316,7 @@ Yêu cầu quan trọng:
                             'metadata' => [
                                 'original_type' => $activity['type'] ?? 'activity',
                                 'day' => $dayIndex + 1,
-                                'matched_place_id' => $checkinPlaceId,
+                                'matched_place_id' => $CheckInPlaceId,
                                 'matched_hotel_id' => $hotelId,
                                 'matched_restaurant_id' => $restaurantId
                             ],
@@ -1495,7 +1495,7 @@ Yêu cầu quan trọng:
     {
         try {
             $schedule = \App\Models\Schedule::with(['itineraryEvents' => function($query) {
-                $query->with(['checkinPlace', 'hotel', 'restaurant'])->ordered();
+                $query->with(['CheckInPlace', 'hotel', 'restaurant'])->ordered();
             }])->findOrFail($scheduleId);
 
             // Kiểm tra quyền truy cập
@@ -1532,11 +1532,11 @@ Yêu cầu quan trọng:
                     'checkin_place_id' => $event->checkin_place_id,
                     'hotel_id' => $event->hotel_id,
                     'restaurant_id' => $event->restaurant_id,
-                    'checkin_place' => $event->checkinPlace ? [
-                        'id' => $event->checkinPlace->id,
-                        'name' => $event->checkinPlace->name,
-                        'address' => $event->checkinPlace->address,
-                        'description' => $event->checkinPlace->description
+                    'checkin_place' => $event->CheckInPlace ? [
+                        'id' => $event->CheckInPlace->id,
+                        'name' => $event->CheckInPlace->name,
+                        'address' => $event->CheckInPlace->address,
+                        'description' => $event->CheckInPlace->description
                     ] : null,
                     'hotel' => $event->hotel ? [
                         'id' => $event->hotel->id,
@@ -1712,7 +1712,7 @@ Yêu cầu quan trọng:
                         // Lấy ID từ dữ liệu AI hoặc tìm từ database
                         $hotelId = $activity['hotel_id'] ?? null;
                         $restaurantId = $activity['restaurant_id'] ?? null;
-                        $checkinPlaceId = $activity['checkin_place_id'] ?? null;
+                        $CheckInPlaceId = $activity['checkin_place_id'] ?? null;
                         
                         $activityType = $this->determineEventType($activity['type'] ?? 'attraction');
                         $activityName = $activity['name'] ?? '';
@@ -1756,22 +1756,22 @@ Yêu cầu quan trọng:
                                 $restaurantId = $restaurant->id;
                             }
                         }
-                        if (!$checkinPlaceId && $activityType === 'activity') {
-                            $checkinPlace = \App\Models\CheckinPlace::where('name', 'LIKE', '%' . $activityName . '%')
+                        if (!$CheckInPlaceId && $activityType === 'activity') {
+                            $CheckInPlace = \App\Models\CheckInPlace::where('name', 'LIKE', '%' . $activityName . '%')
                                 ->where(function($query) use ($destinationKeywords) {
                                     foreach ($destinationKeywords as $keyword) {
                                         $query->orWhere('address', 'LIKE', '%' . $keyword . '%');
                                     }
                                 })
                                 ->first();
-                            if ($checkinPlace) {
-                                $checkinPlaceId = $checkinPlace->id;
+                            if ($CheckInPlace) {
+                                $CheckInPlaceId = $CheckInPlace->id;
                             }
                         }
                         
                         \App\Models\ItineraryEvent::create([
                             'schedule_id' => $schedule->id,
-                            'checkin_place_id' => $checkinPlaceId,
+                            'checkin_place_id' => $CheckInPlaceId,
                             'hotel_id' => $hotelId,
                             'restaurant_id' => $restaurantId,
                             'title' => mb_convert_encoding($activity['name'] ?? 'Hoạt động', 'UTF-8', 'UTF-8'),
@@ -2544,13 +2544,13 @@ Yêu cầu quan trọng:
 
         try {
             // Tìm kiếm địa điểm check-in
-            $checkinPlaces = CheckinPlace::where(function($query) use ($message) {
+            $CheckInPlaces = CheckInPlace::where(function($query) use ($message) {
                 $query->where('name', 'like', '%' . $message . '%')
                       ->orWhere('address', 'like', '%' . $message . '%')
                       ->orWhere('description', 'like', '%' . $message . '%');
             })->limit(5)->get();
 
-            $data['checkin_places'] = $checkinPlaces->map(function($place) {
+            $data['checkin_places'] = $CheckInPlaces->map(function($place) {
                 return [
                     'name' => $place->name,
                     'address' => $place->address,

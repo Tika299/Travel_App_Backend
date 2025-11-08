@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class CheckinPlaceController extends Controller
+class CheckInPlaceController extends Controller
 {
     /**
      * Lấy danh sách tất cả các địa điểm check-in.
@@ -22,7 +22,7 @@ class CheckinPlaceController extends Controller
     {
         try {
             
-            $places = CheckinPlace::with(['hotel', 'reviews'])->get();
+            $places = CheckInPlace::with(['hotel', 'reviews'])->get();
 
             if ($places->isEmpty()) {
                 return response()->json([
@@ -58,7 +58,7 @@ class CheckinPlaceController extends Controller
     {
         try {
             
-            $place = CheckinPlace::with('hotel')->find($id);
+            $place = CheckInPlace::with('hotel')->find($id);
 
             if (! $place) {
                 return response()->json([
@@ -91,7 +91,7 @@ class CheckinPlaceController extends Controller
     public function getPlaceReviews(int $id): JsonResponse
     {
         try {
-            $place = CheckinPlace::find($id);
+            $place = CheckInPlace::find($id);
 
             if (! $place) {
                 return response()->json([
@@ -176,7 +176,7 @@ class CheckinPlaceController extends Controller
                 }
             }
 
-            $place = CheckinPlace::create($validated);
+            $place = CheckInPlace::create($validated);
 
             return response()->json([
                 'success' => true,
@@ -210,7 +210,7 @@ class CheckinPlaceController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         try {
-            $place = CheckinPlace::find($id);
+            $place = CheckInPlace::find($id);
             if (! $place) {
                 return response()->json([
                     'success' => false,
@@ -331,7 +331,7 @@ class CheckinPlaceController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $place = CheckinPlace::find($id);
+            $place = CheckInPlace::find($id);
             if (! $place) {
                 return response()->json([
                     'success' => false,
@@ -377,9 +377,9 @@ class CheckinPlaceController extends Controller
     {
         try {
             $data = [
-                'totalCheckinPlaces'      => CheckinPlace::count(),
+                'totalCheckInPlaces'      => CheckInPlace::count(),
                 
-                'activeCheckinPlaces' => CheckinPlace::where('status', 'active')->count(),
+                'activeCheckInPlaces' => CheckInPlace::where('status', 'active')->count(),
             ];
 
             return response()->json([
@@ -404,7 +404,7 @@ class CheckinPlaceController extends Controller
             Log::info('Bắt đầu lấy danh sách địa điểm check-in đề xuất');
 
             
-            $places = CheckinPlace::latest()->limit(8)->get();
+            $places = CheckInPlace::latest()->limit(8)->get();
             
 
             Log::info('Lấy danh sách địa điểm thành công', [

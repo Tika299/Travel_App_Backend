@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class SaPaCheckinPlacesSeeder extends Seeder
+class SaPaCheckInPlacesSeeder extends Seeder
 {
     public function run(): void
     {
@@ -23,7 +23,7 @@ class SaPaCheckinPlacesSeeder extends Seeder
             ]);
         }
 
-        $checkinPlaces = [
+        $CheckInPlaces = [
             [
                 'name' => 'Núi Fansipan',
                 'description' => 'Đỉnh núi cao nhất Đông Dương với view toàn cảnh núi non hùng vĩ',
@@ -519,7 +519,7 @@ class SaPaCheckinPlacesSeeder extends Seeder
             ],
         ];
 
-        foreach ($checkinPlaces as $place) {
+        foreach ($CheckInPlaces as $place) {
             $place['created_at'] = now();
             $place['updated_at'] = now();
             DB::table('checkin_places')->insert($place);

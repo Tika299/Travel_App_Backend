@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CheckinPlaceHotel extends Model
+class CheckInPlaceHotel extends Model
 {
     protected $fillable = [
         'checkin_place_id',
@@ -13,9 +13,9 @@ class CheckinPlaceHotel extends Model
         'distance_km',
     ];
 
-    public function checkinPlace()
+    public function CheckInPlace()
     {
-        return $this->belongsTo(CheckinPlace::class);
+        return $this->belongsTo(CheckInPlace::class);
     }
 
     public function hotel()

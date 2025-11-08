@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\CheckinPlace;
+use App\Models\CheckInPlace;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Exception;
 
-class CheckinPlacesImport implements ToModel, WithHeadingRow, WithValidation
+class CheckInPlacesImport implements ToModel, WithHeadingRow, WithValidation
 {
     use Importable;
 
@@ -51,8 +51,8 @@ class CheckinPlacesImport implements ToModel, WithHeadingRow, WithValidation
         $transportOptions = json_decode($row['transport_options'] ?? '[]', true) ?? [];
         $isFree = (bool) filter_var($row['is_free'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
-        // Tạo một instance mới của CheckinPlace và gán dữ liệu
-        return new CheckinPlace([
+        // Tạo một instance mới của CheckInPlace và gán dữ liệu
+        return new CheckInPlace([
             'name'              => $row['name'],
             'description'       => $row['description'] ?? null,
             'address'           => $row['address'] ?? null,

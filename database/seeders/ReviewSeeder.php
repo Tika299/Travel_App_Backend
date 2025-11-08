@@ -16,13 +16,13 @@ class ReviewSeeder extends Seeder
     public function run(): void
     {
         // Get all check-in places from the checkin_places table
-        $checkinPlaces = DB::table('checkin_places')->get();
+        $CheckInPlaces = DB::table('checkin_places')->get();
 
         // Generate 50 reviews for each check-in place
-        foreach ($checkinPlaces as $place) {
+        foreach ($CheckInPlaces as $place) {
             Review::factory()->count(50)->create([
                 'reviewable_id' => $place->id,
-                'reviewable_type' => 'App\Models\CheckinPlace',
+                'reviewable_type' => 'App\Models\CheckInPlace',
             ])->each(function ($review) {
                 $imagesCount = rand(1, 5);
                 // Create associated review images

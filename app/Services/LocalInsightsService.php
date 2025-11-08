@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\CheckinPlace;
+use App\Models\CheckInPlace;
 use App\Models\Hotel;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\DB;

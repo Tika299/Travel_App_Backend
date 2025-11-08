@@ -48,14 +48,14 @@ class Location extends Model
     ];
 
     /**
-     * Định nghĩa mối quan hệ: Một Location (thành phố) có nhiều CheckinPlace.
-     * Model CheckinPlace sẽ có khóa ngoại 'location_id' trỏ về bảng này.
+     * Định nghĩa mối quan hệ: Một Location (thành phố) có nhiều CheckInPlace.
+     * Model CheckInPlace sẽ có khóa ngoại 'location_id' trỏ về bảng này.
      *
      * @return HasMany
      */
-    public function checkinPlaces(): HasMany
+    public function CheckInPlaces(): HasMany
     {
-        return $this->hasMany(CheckinPlace::class);
+        return $this->hasMany(CheckInPlace::class);
     }
 
    

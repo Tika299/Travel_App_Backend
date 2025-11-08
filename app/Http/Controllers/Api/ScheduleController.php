@@ -15,7 +15,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return Schedule::with(['user', 'checkinPlace'])->get();
+        return Schedule::with(['user', 'CheckInPlace'])->get();
     }
 
     /**
@@ -44,7 +44,7 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        $schedule = Schedule::with(['user', 'checkinPlace'])->findOrFail($id);
+        $schedule = Schedule::with(['user', 'CheckInPlace'])->findOrFail($id);
         return response()->json($schedule);
     }
 
@@ -264,7 +264,7 @@ class ScheduleController extends Controller
         }
 
         // 3. Lấy dữ liệu thực từ database
-        $places = \App\Models\CheckinPlace::where('status', 'active')->get()->toArray();
+        $places = \App\Models\CheckInPlace::where('status', 'active')->get()->toArray();
         $hotels = \App\Models\Hotel::all()->toArray();
         $restaurants = \App\Models\Restaurant::all()->toArray();
 
@@ -460,13 +460,13 @@ class ScheduleController extends Controller
             $basePrompt .= "ĐỊA ĐIỂM THỰC TẾ TỪ DATABASE:\n";
             
             // Phân loại địa điểm theo type
-            $checkinPlaces = array_filter($filteredPlaces, fn($p) => $p['type'] === 'checkin_place');
+            $CheckInPlaces = array_filter($filteredPlaces, fn($p) => $p['type'] === 'checkin_place');
             $hotels = array_filter($filteredPlaces, fn($p) => $p['type'] === 'hotel');
             $restaurants = array_filter($filteredPlaces, fn($p) => $p['type'] === 'restaurant');
             
-            if (!empty($checkinPlaces)) {
+            if (!empty($CheckInPlaces)) {
                 $basePrompt .= "ĐỊA ĐIỂM THAM QUAN:\n";
-                foreach (array_slice($checkinPlaces, 0, 8) as $place) {
+                foreach (array_slice($CheckInPlaces, 0, 8) as $place) {
                     $price = $place['is_free'] ? 'Miễn phí' : number_format($place['price']) . ' VND';
                     $basePrompt .= "- {$place['name']}: {$place['description']}, Rating {$place['rating']}/5, {$price}\n";
                 }
@@ -579,17 +579,17 @@ class ScheduleController extends Controller
         $period = new \DatePeriod($start, $interval, $end->modify('+1 day'));
         
         // Phân loại địa điểm theo loại
-        $checkinPlaces = array_filter($filteredPlaces, fn($place) => $place['type'] === 'checkin_place');
+        $CheckInPlaces = array_filter($filteredPlaces, fn($place) => $place['type'] === 'checkin_place');
         $restaurants = array_filter($filteredPlaces, fn($place) => $place['type'] === 'restaurant');
         $hotels = array_filter($filteredPlaces, fn($place) => $place['type'] === 'hotel');
         
         // Chuyển thành array để có thể shuffle
-        $checkinPlaces = array_values($checkinPlaces);
+        $CheckInPlaces = array_values($CheckInPlaces);
         $restaurants = array_values($restaurants);
         $hotels = array_values($hotels);
         
         // Kiểm tra xem có đủ dữ liệu thực tế không
-        if (empty($checkinPlaces) && empty($restaurants)) {
+        if (empty($CheckInPlaces) && empty($restaurants)) {
             \Log::warning('No real checkin places or restaurants available');
             return [];
         }
@@ -604,7 +604,7 @@ class ScheduleController extends Controller
             
             // Tạo lịch trình thông minh cho từng ngày với địa điểm thực tế
             $dayEvents = $this->createSmartDaySchedule(
-                $checkinPlaces, 
+                $CheckInPlaces, 
                 $restaurants, 
                 $hotels, 
                 $dateStr, 
@@ -621,7 +621,7 @@ class ScheduleController extends Controller
     /**
      * Tạo lịch trình thông minh cho một ngày
      */
-    private function createSmartDaySchedule($checkinPlaces, $restaurants, $hotels, $dateStr, $dayCount, &$globalUsedPlaces)
+    private function createSmartDaySchedule($CheckInPlaces, $restaurants, $hotels, $dateStr, $dayCount, &$globalUsedPlaces)
     {
         $events = [];
         
@@ -629,7 +629,7 @@ class ScheduleController extends Controller
         $timeSlots = $this->getDaySpecificTimeSlots($dayCount);
         
         // Xáo trộn địa điểm để tạo sự đa dạng
-        $shuffledCheckinPlaces = $this->shufflePlacesForDay($checkinPlaces, $dayCount);
+        $shuffledCheckInPlaces = $this->shufflePlacesForDay($CheckInPlaces, $dayCount);
         $shuffledRestaurants = $this->shufflePlacesForDay($restaurants, $dayCount);
         $shuffledHotels = $this->shufflePlacesForDay($hotels, $dayCount);
         
@@ -641,7 +641,7 @@ class ScheduleController extends Controller
             
             // Chọn địa điểm phù hợp cho thời gian này
             $selectedPlace = $this->selectOptimalPlace(
-                $shuffledCheckinPlaces, 
+                $shuffledCheckInPlaces, 
                 $shuffledRestaurants, 
                 $shuffledHotels, 
                 $period, 
@@ -740,7 +740,7 @@ class ScheduleController extends Controller
     /**
      * Chọn địa điểm tối ưu cho thời gian cụ thể
      */
-    private function selectOptimalPlace($checkinPlaces, $restaurants, $hotels, $period, $usedPlaces, $slotIndex, $dayCount, &$globalUsedPlaces)
+    private function selectOptimalPlace($CheckInPlaces, $restaurants, $hotels, $period, $usedPlaces, $slotIndex, $dayCount, &$globalUsedPlaces)
     {
         $availablePlaces = [];
         
@@ -756,7 +756,7 @@ class ScheduleController extends Controller
                     return !in_array($placeId, $usedPlaces) && !in_array($placeId, $globalUsedPlaces);
                 });
                 if (empty($availablePlaces)) {
-                    $availablePlaces = array_filter($checkinPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
+                    $availablePlaces = array_filter($CheckInPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
                         $placeId = $place['id'] ?? $place['name'];
                         return !in_array($placeId, $usedPlaces) && !in_array($placeId, $globalUsedPlaces);
                     });
@@ -765,7 +765,7 @@ class ScheduleController extends Controller
                 
             case 'morning':
                 // Sáng sớm - ưu tiên địa điểm thực tế ngoài trời
-                $availablePlaces = array_filter($checkinPlaces, function($place) use ($usedPlaces, $dayFocus, $globalUsedPlaces) {
+                $availablePlaces = array_filter($CheckInPlaces, function($place) use ($usedPlaces, $dayFocus, $globalUsedPlaces) {
                     $placeId = $place['id'] ?? $place['name'];
                     $isOutdoor = strpos(strtolower($place['name']), 'công viên') !== false ||
                                 strpos(strtolower($place['name']), 'bảo tàng') !== false ||
@@ -783,7 +783,7 @@ class ScheduleController extends Controller
                 
             case 'afternoon':
                 // Chiều - ưu tiên địa điểm thực tế tham quan, mua sắm
-                $availablePlaces = array_filter($checkinPlaces, function($place) use ($usedPlaces, $dayFocus, $globalUsedPlaces) {
+                $availablePlaces = array_filter($CheckInPlaces, function($place) use ($usedPlaces, $dayFocus, $globalUsedPlaces) {
                     $placeId = $place['id'] ?? $place['name'];
                     $isIndoor = strpos(strtolower($place['name']), 'trung tâm') !== false ||
                                strpos(strtolower($place['name']), 'mall') !== false ||
@@ -806,7 +806,7 @@ class ScheduleController extends Controller
                     return !in_array($placeId, $usedPlaces) && !in_array($placeId, $globalUsedPlaces);
                 });
                 if (empty($availablePlaces)) {
-                    $availablePlaces = array_filter($checkinPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
+                    $availablePlaces = array_filter($CheckInPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
                         $placeId = $place['id'] ?? $place['name'];
                         return !in_array($placeId, $usedPlaces) && !in_array($placeId, $globalUsedPlaces);
                     });
@@ -815,7 +815,7 @@ class ScheduleController extends Controller
                 
             default:
                 // Các thời gian khác - lấy tất cả địa điểm thực tế chưa dùng
-                $availablePlaces = array_filter($checkinPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
+                $availablePlaces = array_filter($CheckInPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
                     $placeId = $place['id'] ?? $place['name'];
                     return !in_array($placeId, $usedPlaces) && !in_array($placeId, $globalUsedPlaces);
                 });
@@ -827,7 +827,7 @@ class ScheduleController extends Controller
         }
         
         // Nếu không có địa điểm phù hợp, lấy bất kỳ địa điểm thực tế nào chưa dùng
-        $allPlaces = array_merge($checkinPlaces, $restaurants, $hotels);
+        $allPlaces = array_merge($CheckInPlaces, $restaurants, $hotels);
         $unusedPlaces = array_filter($allPlaces, function($place) use ($usedPlaces, $globalUsedPlaces) {
             $placeId = $place['id'] ?? $place['name'];
             return !in_array($placeId, $usedPlaces) && !in_array($placeId, $globalUsedPlaces);
@@ -1080,15 +1080,15 @@ class ScheduleController extends Controller
         }
 
         // Xử lý địa điểm được chọn
-        $checkinPlaceId = $validated['checkin_place_id'] ?? null;
+        $CheckInPlaceId = $validated['checkin_place_id'] ?? null;
         $hotelId = $validated['hotel_id'] ?? null;
         $restaurantId = $validated['restaurant_id'] ?? null;
         
         // Nếu không có địa điểm nào được chọn, sử dụng checkin_place đầu tiên làm mặc định
-        if (!$checkinPlaceId && !$hotelId && !$restaurantId) {
-            $checkinPlace = \App\Models\CheckInPlace::first();
-            if ($checkinPlace) {
-                $checkinPlaceId = $checkinPlace->id;
+        if (!$CheckInPlaceId && !$hotelId && !$restaurantId) {
+            $CheckInPlace = \App\Models\CheckInPlace::first();
+            if ($CheckInPlace) {
+                $CheckInPlaceId = $CheckInPlace->id;
             }
         }
 
@@ -1144,7 +1144,7 @@ class ScheduleController extends Controller
             'progress' => 0,
             'participants' => 1,
             'budget' => 0,
-            'checkin_place_id' => $checkinPlaceId,
+            'checkin_place_id' => $CheckInPlaceId,
             'hotel_id' => $hotelId,
             'restaurant_id' => $restaurantId,
         ]);
@@ -1169,7 +1169,7 @@ class ScheduleController extends Controller
         // Lấy Schedule events (events chính)
         $schedules = Schedule::where('user_id', auth()->id())
             ->select('id', 'name as title', 'start_date', 'end_date', 'description', 'status', 'user_id', 'checkin_place_id', 'hotel_id', 'restaurant_id')
-            ->with(['user:id,name', 'checkinPlace:id,name,address', 'hotel:id,name,address', 'restaurant:id,name,address'])
+            ->with(['user:id,name', 'CheckInPlace:id,name,address', 'hotel:id,name,address', 'restaurant:id,name,address'])
             ->get();
             
         foreach ($schedules as $event) {
@@ -1240,11 +1240,11 @@ class ScheduleController extends Controller
                     'address' => $event->restaurant->address,
                     'id' => $event->restaurant_id
                 ];
-            } elseif ($event->checkinPlace) {
+            } elseif ($event->CheckInPlace) {
                 $event->location_info = [
                     'type' => 'attraction',
-                    'name' => $event->checkinPlace->name,
-                    'address' => $event->checkinPlace->address,
+                    'name' => $event->CheckInPlace->name,
+                    'address' => $event->CheckInPlace->address,
                     'id' => $event->checkin_place_id
                 ];
             }
@@ -1264,7 +1264,7 @@ class ScheduleController extends Controller
         $itineraryEvents = \App\Models\ItineraryEvent::whereHas('schedule', function($query) {
                 $query->where('user_id', auth()->id());
             })
-            ->with(['schedule:id,name', 'checkinPlace:id,name,address', 'hotel:id,name,address', 'restaurant:id,name,address'])
+            ->with(['schedule:id,name', 'CheckInPlace:id,name,address', 'hotel:id,name,address', 'restaurant:id,name,address'])
             ->get();
             
         foreach ($itineraryEvents as $event) {
@@ -1300,11 +1300,11 @@ class ScheduleController extends Controller
                     'address' => $event->restaurant->address,
                     'id' => $event->restaurant_id
                 ];
-            } elseif ($event->checkinPlace) {
+            } elseif ($event->CheckInPlace) {
                 $calendarEvent->location_info = [
                     'type' => 'attraction',
-                    'name' => $event->checkinPlace->name,
-                    'address' => $event->checkinPlace->address,
+                    'name' => $event->CheckInPlace->name,
+                    'address' => $event->CheckInPlace->address,
                     'id' => $event->checkin_place_id
                 ];
             }

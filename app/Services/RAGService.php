@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\CheckinPlace;
+use App\Models\CheckInPlace;
 use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\TransportCompany;
@@ -127,13 +127,13 @@ class RAGService
         try {
             // Lấy địa điểm tham quan
             if ($analysis['destination']) {
-                $checkinPlaces = CheckinPlace::where(function($query) use ($analysis) {
+                $CheckInPlaces = CheckInPlace::where(function($query) use ($analysis) {
                     $query->where('name', 'like', '%' . $analysis['destination'] . '%')
                           ->orWhere('address', 'like', '%' . $analysis['destination'] . '%')
                           ->orWhere('description', 'like', '%' . $analysis['destination'] . '%');
                 })->limit(10)->get();
 
-                $data['checkin_places'] = $checkinPlaces->map(function($place) {
+                $data['checkin_places'] = $CheckInPlaces->map(function($place) {
                     return [
                         'name' => $place->name,
                         'address' => $place->address,

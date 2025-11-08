@@ -44,7 +44,7 @@ class CheckInPlace extends Model
     ];
 
     /**
-     * Get the location that owns the CheckinPlace.
+     * Get the location that owns the CheckInPlace.
      */
     public function location(): BelongsTo
     {
@@ -61,7 +61,7 @@ class CheckInPlace extends Model
     }
 
     /**
-     * Get all of the reviews for the CheckinPlace.
+     * Get all of the reviews for the CheckInPlace.
      */
     public function reviews(): MorphMany
     {

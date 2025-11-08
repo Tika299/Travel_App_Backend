@@ -9,6 +9,6 @@ class CheckinPhoto extends Model
 
     public function place()
     {
-        return $this->belongsTo(CheckinPlace::class, 'checkin_place_id');
+        return $this->belongsTo(CheckInPlace::class, 'checkin_place_id');
     }
 }

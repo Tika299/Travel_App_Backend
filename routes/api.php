@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\CheckinPlaceController;
+use App\Http\Controllers\Api\CheckInPlaceController;
 use App\Http\Controllers\Api\TransportCompanyController;
 use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\Api\ReviewController;
@@ -36,17 +36,17 @@ Route::post('/transport-companies/import', [TransportCompanyImportController::cl
 
 Route::post('/transport-companies/reviews', [TransportCompanyController::class, 'submitReview']);
 
-use App\Http\Controllers\CheckinPlaceImportController;
+use App\Http\Controllers\CheckInPlaceImportController;
 
-Route::post('/checkin-places/import', [CheckinPlaceImportController::class, 'import']);
+Route::post('/checkin-places/import', [CheckInPlaceImportController::class, 'import']);
 /*
 |--------------------------------------------------------------------------
 | 🏨 🍜 🍴 Suggested and Public Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/checkin-places/statistics', [CheckinPlaceController::class, 'getStatistics']);
-Route::get('/checkin-places/popular', [CheckinPlaceController::class, 'getPopularPlaces']);
+Route::get('/checkin-places/statistics', [CheckInPlaceController::class, 'getStatistics']);
+Route::get('/checkin-places/popular', [CheckInPlaceController::class, 'getPopularPlaces']);
 Route::get('/hotels/popular', [HotelController::class, 'getPopularHotels']);
 Route::get('/hotels/suggested', [HotelController::class, 'getSuggested']);
 Route::post('/cuisines/import', [CuisineController::class, 'importCuisines'])->name('cuisines.import');
@@ -82,10 +82,10 @@ Route::put('/restaurants/{id}', [RestaurantController::class, 'update']);
 Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);
 
 // Checkin Places Routes
-Route::get('/checkin-places', [CheckinPlaceController::class, 'index']);
-Route::post('/checkin-places', [CheckinPlaceController::class, 'store']);
-Route::put('/checkin-places/{id}', [CheckinPlaceController::class, 'update']);
-Route::delete('/checkin-places/{id}', [CheckinPlaceController::class, 'destroy']);
+Route::get('/checkin-places', [CheckInPlaceController::class, 'index']);
+Route::post('/checkin-places', [CheckInPlaceController::class, 'store']);
+Route::put('/checkin-places/{id}', [CheckInPlaceController::class, 'update']);
+Route::delete('/checkin-places/{id}', [CheckInPlaceController::class, 'destroy']);
 
 // Transport Companies Routes (Public)
 Route::get('/transport-companies', [TransportCompanyController::class, 'index']);
@@ -199,7 +199,7 @@ Route::middleware('auth:sanctum')->post('/user/avatar', [UserController::class, 
 Route::get('reviews', [ReviewController::class, 'index']);
 
 // API Resources (Giữ lại các resource khác nếu bạn đang dùng chúng)
-Route::apiResource('checkin-places', CheckinPlaceController::class);
+Route::apiResource('checkin-places', CheckInPlaceController::class);
 Route::apiResource('transport-companies', TransportCompanyController::class);
 // Route::apiResource('transportations', TransportationsController::class); // <-- Dòng này đã được BỎ COMMENT HOẶC XÓA ĐI
 Route::apiResource('Restaurant', RestaurantController::class);
@@ -216,18 +216,18 @@ Route::delete('/transportations/{id}', [TransportationsController::class, 'destr
 
 
 // Check-in Routes
-Route::post('/checkin-places/checkin', [CheckinPlaceController::class, 'checkin']);
-Route::delete('/checkin-photos/{photoId}', [CheckinPlaceController::class, 'deleteCheckinPhoto']);
+Route::post('/checkin-places/checkin', [CheckInPlaceController::class, 'checkin']);
+Route::delete('/checkin-photos/{photoId}', [CheckInPlaceController::class, 'deleteCheckinPhoto']);
 
 Route::get('/Restaurant/{id}/reviews', [ReviewController::class, 'index']);
 Route::get('/Restaurant/{id}/reviews/stats', [ReviewController::class, 'getStats']);
-Route::get('/checkin-places/{id}/reviews', [CheckinPlaceController::class, 'getPlaceReviews']);
+Route::get('/checkin-places/{id}/reviews', [CheckInPlaceController::class, 'getPlaceReviews']);
 Route::get('/transport-companies/{id}/reviews', [TransportCompanyController::class, 'getCompanyReviews']);
-Route::get('/checkin-places/{id}', [CheckinPlaceController::class, 'show'])->where('id', '[0-9]+');
+Route::get('/checkin-places/{id}', [CheckInPlaceController::class, 'show'])->where('id', '[0-9]+');
 
 
 // Lấy danh sách địa điểm check-in đề xuất
-Route::get('/places/popular', [CheckinPlaceController::class, 'getPopularPlaces']);
+Route::get('/places/popular', [CheckInPlaceController::class, 'getPopularPlaces']);
 
 
 Route::apiResource('schedules', ScheduleController::class);

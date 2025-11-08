@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($checkinPlaces as $place)
+            @foreach($CheckInPlaces as $place)
                 <tr>
                     <td>{{ $place->id }}</td>
                     <td>{{ $place->name }}</td>
@@ -55,7 +55,7 @@
                 </tr>
             @endforeach
 
-            @if($checkinPlaces->isEmpty())
+            @if($CheckInPlaces->isEmpty())
                 <tr>
                     <td colspan="8" style="text-align: center;">Không có dữ liệu</td>
                 </tr>

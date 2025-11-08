@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class HaLongCheckinPlacesSeeder extends Seeder
+class HaLongCheckInPlacesSeeder extends Seeder
 {
     public function run(): void
     {
@@ -23,7 +23,7 @@ class HaLongCheckinPlacesSeeder extends Seeder
             ]);
         }
 
-        $checkinPlaces = [
+        $CheckInPlaces = [
             [
                 'name' => 'Vịnh Hạ Long',
                 'description' => 'Vịnh biển nổi tiếng với hàng nghìn đảo đá vôi và hang động kỳ vĩ',
@@ -502,7 +502,7 @@ class HaLongCheckinPlacesSeeder extends Seeder
             ],
         ];
 
-        foreach ($checkinPlaces as $place) {
+        foreach ($CheckInPlaces as $place) {
             $place['created_at'] = now();
             $place['updated_at'] = now();
             DB::table('checkin_places')->insert($place);

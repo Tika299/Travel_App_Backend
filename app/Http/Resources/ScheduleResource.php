@@ -19,7 +19,7 @@ class ScheduleResource extends JsonResource
             'name' => $this->name,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
-            'checkin_place' => new CheckinPlaceResource($this->whenLoaded('checkinPlace')),
+            'checkin_place' => new CheckInPlaceResource($this->whenLoaded('CheckInPlace')),
             'participants' => $this->participants,
             'description' => $this->description,
             'budget' => $this->budget,

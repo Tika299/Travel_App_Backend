@@ -19,33 +19,33 @@
 
     <h1>Chỉnh sửa Check-in Place</h1>
 
-    <form action="{{ route('admin.checkin_places.update', $checkinPlace->id) }}" method="POST">
+    <form action="{{ route('admin.checkin_places.update', $CheckInPlace->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <label>Tên:</label>
-        <input type="text" name="name" value="{{ $checkinPlace->name }}" required>
+        <input type="text" name="name" value="{{ $CheckInPlace->name }}" required>
 
         <label>Mô tả:</label>
-        <textarea name="description">{{ $checkinPlace->description }}</textarea>
+        <textarea name="description">{{ $CheckInPlace->description }}</textarea>
 
         <label>Địa chỉ:</label>
-        <input type="text" name="address" value="{{ $checkinPlace->address }}">
+        <input type="text" name="address" value="{{ $CheckInPlace->address }}">
 
         <label>Latitude:</label>
-        <input type="text" name="latitude" value="{{ $checkinPlace->latitude }}">
+        <input type="text" name="latitude" value="{{ $CheckInPlace->latitude }}">
 
         <label>Longitude:</label>
-        <input type="text" name="longitude" value="{{ $checkinPlace->longitude }}">
+        <input type="text" name="longitude" value="{{ $CheckInPlace->longitude }}">
 
         <label>Hình ảnh (URL hoặc upload sau):</label>
-        <input type="text" name="image" value="{{ $checkinPlace->image }}">
+        <input type="text" name="image" value="{{ $CheckInPlace->image }}">
 
         <label>Rating:</label>
-        <input type="number" step="0.01" name="rating" value="{{ $checkinPlace->rating }}">
+        <input type="number" step="0.01" name="rating" value="{{ $CheckInPlace->rating }}">
 
         <label>Location ID:</label>
-        <input type="number" name="location_id" value="{{ $checkinPlace->location_id }}">
+        <input type="number" name="location_id" value="{{ $CheckInPlace->location_id }}">
 
         <button type="submit">Cập nhật</button>
     </form>

@@ -13,55 +13,55 @@ class VietNamSeeder extends Seeder
     {
         $this->call([
             // Hồ Chí Minh
-            HCMCheckinPlacesSeeder::class,
+            HCMCheckInPlacesSeeder::class,
             HCMHotelsSeeder::class,
             HCMRestaurantsSeeder::class,
             
             // Bình Định
-            BinhDinhCheckinPlacesSeeder::class,
+            BinhDinhCheckInPlacesSeeder::class,
             BinhDinhHotelsSeeder::class,
             BinhDinhRestaurantsSeeder::class,
             
             // Hà Nội
-            HaNoiCheckinPlacesSeeder::class,
+            HaNoiCheckInPlacesSeeder::class,
             HaNoiHotelsSeeder::class,
             HaNoiRestaurantsSeeder::class,
             
             // Đà Nẵng
-            DaNangCheckinPlacesSeeder::class,
+            DaNangCheckInPlacesSeeder::class,
             DaNangHotelsSeeder::class,
             DaNangRestaurantsSeeder::class,
             
             // Hải Phòng
-            HaiPhongCheckinPlacesSeeder::class,
+            HaiPhongCheckInPlacesSeeder::class,
             HaiPhongHotelsSeeder::class,
             HaiPhongRestaurantsSeeder::class,
             
             // Khánh Hòa
-            KhanhHoaCheckinPlacesSeeder::class,
+            KhanhHoaCheckInPlacesSeeder::class,
             KhanhHoaHotelsSeeder::class,
             KhanhHoaRestaurantsSeeder::class,
             
             // Kiên Giang
             KienGiangHotelsSeeder::class, 
             KienGiangRestaurantsSeeder::class, 
-            KienGiangCheckinPlacesSeeder::class, 
+            KienGiangCheckInPlacesSeeder::class, 
 
             HaLongHotelsSeeder::class, 
             HaLongRestaurantsSeeder::class, 
-            HaLongCheckinPlacesSeeder::class,
+            HaLongCheckInPlacesSeeder::class,
 
             SaPaHotelsSeeder::class, 
             SaPaRestaurantsSeeder::class, 
-            SaPaCheckinPlacesSeeder::class,
+            SaPaCheckInPlacesSeeder::class,
 
             CanThoHotelsSeeder::class, 
             CanThoRestaurantsSeeder::class, 
-            CanThoCheckinPlacesSeeder::class,
+            CanThoCheckInPlacesSeeder::class,
 
             DaLatHotelsSeeder::class,
             DaLatRestaurantsSeeder::class, 
-            DaLatCheckinPlacesSeeder::class, 
+            DaLatCheckInPlacesSeeder::class, 
 
         ]);
     }
