@@ -29,7 +29,7 @@ class FavouriteController extends Controller
         if ($type) {
             $modelMap = [
                 'hotel' => 'App\Models\Hotel',
-                'checkin_place' => 'App\Models\CheckinPlace',
+                'checkin_place' => 'App\Models\CheckInPlace',
                 'cuisine' => 'App\Models\Cuisine',
             ];
 
@@ -60,7 +60,7 @@ class FavouriteController extends Controller
                 ->where('favouritable_type', 'App\Models\Cuisine')
                 ->count(),
             'checkin_place' => Favourite::where('user_id', $userId)
-                ->where('favouritable_type', 'App\Models\CheckinPlace')
+                ->where('favouritable_type', 'App\Models\CheckInPlace')
                 ->count(),
             'hotel' => Favourite::where('user_id', $userId)
                 ->where('favouritable_type', 'App\Models\Hotel')
@@ -76,7 +76,7 @@ class FavouriteController extends Controller
             Log::info('Request data:', $request->all());
             $validator = Validator::make($request->all(), [
                 'favouritable_id' => 'required|integer',
-                'favouritable_type' => 'required|string|in:App\\Models\\CheckinPlace,App\\Models\\Hotel,App\\Models\\Cuisine',
+                'favouritable_type' => 'required|string|in:App\\Models\\CheckInPlace,App\\Models\\Hotel,App\\Models\\Cuisine',
             ]);
 
             if ($validator->fails()) {
@@ -143,7 +143,7 @@ class FavouriteController extends Controller
 
         $validator = Validator::make($request->all(), [
             'favouritable_id' => 'sometimes|integer',
-            'favouritable_type' => 'sometimes|string|in:App\\Models\\CheckinPlace,App\\Models\\Hotel,App\\Models\\Cuisine',
+            'favouritable_type' => 'sometimes|string|in:App\\Models\\CheckInPlace,App\\Models\\Hotel,App\\Models\\Cuisine',
         ]);
 
         if ($validator->fails()) {
@@ -181,7 +181,7 @@ class FavouriteController extends Controller
         
         $validator = Validator::make($request->all(), [
             'favouritable_id' => 'required|integer',
-            'favouritable_type' => 'required|string|in:App\\Models\\CheckinPlace,App\\Models\\Hotel,App\\Models\\Cuisine',
+            'favouritable_type' => 'required|string|in:App\\Models\\CheckInPlace,App\\Models\\Hotel,App\\Models\\Cuisine',
         ]);
 
         if ($validator->fails()) {
