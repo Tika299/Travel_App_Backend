@@ -26,7 +26,7 @@ use Database\Seeders\AmenityHotelTableSeeder;
 use Database\Seeders\AmenityHotelRoomTableSeeder;
 use Database\Seeders\WeatherDataTableSeeder;
 use Database\Seeders\ItineraryWeatherTableSeeder;
-use Database\Seeders\CheckInPlacesTableSeeder; // Thêm seeder cho bảng checkin_places
+use Database\Seeders\CheckinPlacesTableSeeder; // Thêm seeder cho bảng checkin_places
 use Database\Seeders\FavouriteSeeder; // Thêm seeder cho bảng favourites
 use Database\Seeders\CuisineSeeder; // Thêm seeder cho cuisine và categories
 use Database\Seeders\VietNamSeeder; // Thêm seeder cho dữ liệu Việt Nam

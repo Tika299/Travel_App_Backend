@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DaNangCheckInPlacesSeeder extends Seeder
+class DaNangCheckinPlacesSeeder extends Seeder
 {
     public function run(): void
     {

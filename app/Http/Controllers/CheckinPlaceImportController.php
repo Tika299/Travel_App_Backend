@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\CheckInPlacesImport;
+use App\Imports\CheckinPlacesImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-class CheckInPlaceImportController extends Controller
+class CheckinPlaceImportController extends Controller
 {
     /**
      * Import file Excel vào database.

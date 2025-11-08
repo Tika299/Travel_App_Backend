@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class HaiPhongCheckInPlacesSeeder extends Seeder
+class HaiPhongCheckinPlacesSeeder extends Seeder
 {
     public function run(): void
     {

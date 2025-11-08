@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class HaNoiCheckInPlacesSeeder extends Seeder
+class HaNoiCheckinPlacesSeeder extends Seeder
 {
     public function run(): void
     {

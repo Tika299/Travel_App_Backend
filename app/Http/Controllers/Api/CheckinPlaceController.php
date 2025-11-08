@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class CheckInPlaceController extends Controller
+class CheckinPlaceController extends Controller
 {
     /**
      * Lấy danh sách tất cả các địa điểm check-in.
