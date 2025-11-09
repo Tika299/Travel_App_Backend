@@ -6,7 +6,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://travelappdeloy.vercel.app','https://690ff9c7f7e8158b7a39d76a--dancing-rabanadas-d78186.netlify.app'],
+    'allowed_origins' => ['https://travelappdeloy.vercel.app','https://69100167992bd0000862d9b7--dancing-rabanadas-d78186.netlify.app'],
 
     'allowed_origins_patterns' => [],
 
