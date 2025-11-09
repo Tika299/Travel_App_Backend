@@ -42,7 +42,7 @@ class GoogleController extends Controller
         // return redirect("http://localhost:5173/google-success?token=$token");
 
         // return redirect("http://localhost:5173/");
-        return redirect("https://travelappdeloy.vercel.app/oauth-success?token=$token&email=" . urlencode($user->email) . "&avatar=" . urlencode($user->avatar) . "&name=" . urlencode($user->name) . "&bio=" . urlencode($user->bio) . "&phone=" . urlencode($user->phone) . "&created_at=" . urlencode($user->created_at->toIso8601String()));
+        return redirect("https://690ff9c7f7e8158b7a39d76a--dancing-rabanadas-d78186.netlify.app/oauth-success?token=$token&email=" . urlencode($user->email) . "&avatar=" . urlencode($user->avatar) . "&name=" . urlencode($user->name) . "&bio=" . urlencode($user->bio) . "&phone=" . urlencode($user->phone) . "&created_at=" . urlencode($user->created_at->toIso8601String()));
 
         //return redirect("http://localhost:5173/");
     }
